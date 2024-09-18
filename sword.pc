@@ -1,0 +1,14 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=/usr/local/lib
+includedir=${prefix}/include
+
+
+Name: SWORD
+Description: Biblical Text Research Engine
+Version: 1.9.0
+#Libs: -L${libdir} -lsword
+Libs: -L${libdir} -lsword -lz  -lcurl
+Libs.private: -L${libdir} -lsword -lz  -lcurl
+Cflags: -I${includedir}/sword 
+

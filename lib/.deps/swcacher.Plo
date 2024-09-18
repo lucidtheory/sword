@@ -1,0 +1,6 @@
+swcacher.lo: ../src/mgr/swcacher.cpp ../include/swcacher.h \
+  ../include/defs.h
+
+../include/swcacher.h:
+
+../include/defs.h:
