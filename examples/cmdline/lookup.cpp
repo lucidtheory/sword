@@ -1,3 +1,161 @@
+#include <stdio.h>
+#include "booknames.h" // Include your header file
+
+#define NUM_LANGUAGES 34  // Number of languages
+
+// Artist notes and Table of contents per language
+const char* artist_notes[NUM_LANGUAGES] = {
+    "Shënim nga Artisti", "အနုပညာရှင်ထံမှ မှတ်ချက်", "Pahinumdom gikan sa Artist",
+    "藝術家的註釋", "艺术家的注释", "Napomena od umjetnika", "Notat fra kunstneren",
+    "Taiteilijan huomautus", "Note de l'artiste", "Anmerkung des Künstlers", "Nòt Atis la",
+    "Megjegyzés a művésztől", "Nota dell'artista", "アーティストからのメモ", "아티스트의 메모",
+    "Mākslinieka piezīme", "കലാകാരൻ്റെ കുറിപ്പ്", "Fanamarihana avy amin'ny Mpanakanto",
+    "Opmerking van de kunstenaar", "Opmerking van de kunstenaar", "Merknad fra kunstneren",
+    "Notatka od Artysty", "Примечание от художника", "Nota del artista", "Белешка од уметника",
+    "Белешка од уметника", "Anteckning från konstnären", "Paalala mula sa Artist", "Примітка від художника",
+    "Lưu ý từ nghệ sĩ", "ملاحظة من الفنان", "הערה מהאמן", "یادداشت از هنرمند", "Nota do Artista"
+};
+
+const char* table_of_contents[NUM_LANGUAGES] = {
+    "Tabela e Përmbajtjes", "မာတိကာ", "Talaan sa mga Sulod", "目錄", "目录", "Sadržaj",
+    "Indhold", "Sisällys", "Table des matières", "Inhalts", "Tab la", "Tartalom", "Sommario",
+    "目次", "목차", "Satura rādītājs", "ഉള്ളടക്ക പട്ടിക", "Fizahan-takelaka", "Inhoude",
+    "Innhald", "Innhold", "Spis treści", "Оглавление", "Tabla de contenido", "Садржај",
+    "Садржај", "Innehåll", "Talaan ng mga Nilalaman", "Зміст", "Mục lục", "جدول المحتويات",
+    "תוֹכֶן הָעִניָנִים", "فهرست مطالب", "Índice"
+};
+
+// Function to write the CSV file
+void writeCSV(const char* filename) {
+    FILE* csvFile = fopen(filename, "w");
+    if (!csvFile) {
+        perror("Failed to open file");
+        return;
+    }
+
+    // Check if bookNamesData is populated correctly
+    if (sizeof(bookNamesData) / sizeof(bookNamesData[0]) != NUM_LANGUAGES) {
+        fprintf(stderr, "Error: BookNames data size mismatch.\n");
+        fclose(csvFile);
+        return;
+    }
+
+    // Write numeric header row
+    for (int j = 0; j < NUM_LANGUAGES; ++j) {
+        fprintf(csvFile, "Language %d,", j + 1);
+    }
+    fprintf(csvFile, "\n");
+
+    // Write the artist notes row
+    for (int j = 0; j < NUM_LANGUAGES; ++j) {
+        fprintf(csvFile, "%s,", artist_notes[j]);
+    }
+    fprintf(csvFile, "\n");
+
+    // Write the table of contents row
+    for (int j = 0; j < NUM_LANGUAGES; ++j) {
+        fprintf(csvFile, "%s,", table_of_contents[j]);
+    }
+    fprintf(csvFile, "\n");
+
+    // Write book names for each language
+    for (int i = 0; i < 66; ++i) {
+        const char* bookNames[NUM_LANGUAGES];
+        // Initialize bookNames array
+        for (int j = 0; j < NUM_LANGUAGES; ++j) {
+            const BookNames* bookNamesEntry = &bookNamesData[j];
+            if (bookNamesEntry == NULL) {
+                fprintf(stderr, "Error: bookNamesEntry is NULL.\n");
+                fclose(csvFile);
+                return;
+            }
+
+            switch (i) {
+                case 0: bookNames[j] = bookNamesEntry->books.Genesis; break;
+                case 1: bookNames[j] = bookNamesEntry->books.Exodus; break;
+                case 2: bookNames[j] = bookNamesEntry->books.Leviticus; break;
+                case 3: bookNames[j] = bookNamesEntry->books.Numbers; break;
+                case 4: bookNames[j] = bookNamesEntry->books.Deuteronomy; break;
+                case 5: bookNames[j] = bookNamesEntry->books.Joshua; break;
+                case 6: bookNames[j] = bookNamesEntry->books.Judges; break;
+                case 7: bookNames[j] = bookNamesEntry->books.Ruth; break;
+                case 8: bookNames[j] = bookNamesEntry->books.Samuel1; break;
+                case 9: bookNames[j] = bookNamesEntry->books.Samuel2; break;
+                case 10: bookNames[j] = bookNamesEntry->books.Kings1; break;
+                case 11: bookNames[j] = bookNamesEntry->books.Kings2; break;
+                case 12: bookNames[j] = bookNamesEntry->books.Chronicles1; break;
+                case 13: bookNames[j] = bookNamesEntry->books.Chronicles2; break;
+                case 14: bookNames[j] = bookNamesEntry->books.Ezra; break;
+                case 15: bookNames[j] = bookNamesEntry->books.Nehemiah; break;
+                case 16: bookNames[j] = bookNamesEntry->books.Esther; break;
+                case 17: bookNames[j] = bookNamesEntry->books.Job; break;
+                case 18: bookNames[j] = bookNamesEntry->books.Psalms; break;
+                case 19: bookNames[j] = bookNamesEntry->books.Proverbs; break;
+                case 20: bookNames[j] = bookNamesEntry->books.Ecclesiastes; break;
+                case 21: bookNames[j] = bookNamesEntry->books.SongOfSolomon; break;
+                case 22: bookNames[j] = bookNamesEntry->books.Isaiah; break;
+                case 23: bookNames[j] = bookNamesEntry->books.Jeremiah; break;
+                case 24: bookNames[j] = bookNamesEntry->books.Lamentations; break;
+                case 25: bookNames[j] = bookNamesEntry->books.Ezekiel; break;
+                case 26: bookNames[j] = bookNamesEntry->books.Daniel; break;
+                case 27: bookNames[j] = bookNamesEntry->books.Hosea; break;
+                case 28: bookNames[j] = bookNamesEntry->books.Joel; break;
+                case 29: bookNames[j] = bookNamesEntry->books.Amos; break;
+                case 30: bookNames[j] = bookNamesEntry->books.Obadiah; break;
+                case 31: bookNames[j] = bookNamesEntry->books.Jonah; break;
+                case 32: bookNames[j] = bookNamesEntry->books.Micah; break;
+                case 33: bookNames[j] = bookNamesEntry->books.Nahum; break;
+                case 34: bookNames[j] = bookNamesEntry->books.Habakkuk; break;
+                case 35: bookNames[j] = bookNamesEntry->books.Zephaniah; break;
+                case 36: bookNames[j] = bookNamesEntry->books.Haggai; break;
+                case 37: bookNames[j] = bookNamesEntry->books.Zechariah; break;
+                case 38: bookNames[j] = bookNamesEntry->books.Malachi; break;
+                case 39: bookNames[j] = bookNamesEntry->books.Matthew; break;
+                case 40: bookNames[j] = bookNamesEntry->books.Mark; break;
+                case 41: bookNames[j] = bookNamesEntry->books.Luke; break;
+                case 42: bookNames[j] = bookNamesEntry->books.John; break;
+                case 43: bookNames[j] = bookNamesEntry->books.Acts; break;
+                case 44: bookNames[j] = bookNamesEntry->books.Romans; break;
+                case 45: bookNames[j] = bookNamesEntry->books.Corinthians1; break;
+                case 46: bookNames[j] = bookNamesEntry->books.Corinthians2; break;
+                case 47: bookNames[j] = bookNamesEntry->books.Galatians; break;
+                case 48: bookNames[j] = bookNamesEntry->books.Ephesians; break;
+                case 49: bookNames[j] = bookNamesEntry->books.Philippians; break;
+                case 50: bookNames[j] = bookNamesEntry->books.Colossians; break;
+                case 51: bookNames[j] = bookNamesEntry->books.Thessalonians1; break;
+                case 52: bookNames[j] = bookNamesEntry->books.Thessalonians2; break;
+                case 53: bookNames[j] = bookNamesEntry->books.Timothy1; break;
+                case 54: bookNames[j] = bookNamesEntry->books.Timothy2; break;
+                case 55: bookNames[j] = bookNamesEntry->books.Titus; break;
+                case 56: bookNames[j] = bookNamesEntry->books.Philemon; break;
+                case 57: bookNames[j] = bookNamesEntry->books.Hebrews; break;
+                case 58: bookNames[j] = bookNamesEntry->books.James; break;
+                case 59: bookNames[j] = bookNamesEntry->books.Peter1; break;
+                case 60: bookNames[j] = bookNamesEntry->books.Peter2; break;
+                case 61: bookNames[j] = bookNamesEntry->books.John1; break;
+                case 62: bookNames[j] = bookNamesEntry->books.John2; break;
+                case 63: bookNames[j] = bookNamesEntry->books.John3; break;
+                case 64: bookNames[j] = bookNamesEntry->books.Jude; break;
+                case 65: bookNames[j] = bookNamesEntry->books.Revelation; break;
+                default: bookNames[j] = ""; break;
+            }
+        }
+
+        // Write book names
+        for (int j = 0; j < NUM_LANGUAGES; ++j) {
+            fprintf(csvFile, "%s,", bookNames[j] ? bookNames[j] : ""); // Book Name
+        }
+        fprintf(csvFile, "\n");
+    }
+
+    fclose(csvFile);
+}
+
+
+int main() {
+    writeCSV("books.csv");
+    return 0;
+}
 // #include <iostream>
 // #include <fstream>
 // #include <sstream>
@@ -233,41 +391,41 @@
  * General Public License for more details.
  *
  */
-#include <fstream>
-#include <array>
-#include <string>
-#include <stdio.h>
-#include <iostream>
-#include <stdlib.h>
-#include <swmgr.h>
-#include <swmodule.h>
-#include <swfilter.h>
-#include <markupfiltmgr.h>
-#include <osiswordjs.h>
-#include <versekey.h>
-#include <cstring>
-#include <regex>
-#include <sstream>
-#include <booknames.h>
-//#include "../../bindings/corba/orbitcpp/webmgr.hpp"
+// #include <fstream>
+// #include <array>
+// #include <string>
+// #include <stdio.h>
+// #include <iostream>
+// #include <stdlib.h>
+// #include <swmgr.h>
+// #include <swmodule.h>
+// #include <swfilter.h>
+// #include <markupfiltmgr.h>
+// #include <osiswordjs.h>
+// #include <versekey.h>
+// #include <cstring>
+// #include <regex>
+// #include <sstream>
+// #include <booknames.h>
+// //#include "../../bindings/corba/orbitcpp/webmgr.hpp"
 
 
-using sword::SWMgr;
-using sword::MarkupFilterMgr;
-using sword::SWModule;
-using sword::FMT_WEBIF;
-using sword::FMT_HTMLHREF;
-using sword::FMT_XHTML;
-using sword::FMT_OSIS;
-using sword::FMT_RTF;
-using sword::FMT_LATEX;
-using sword::ModMap;
-using sword::AttributeTypeList;
-using sword::AttributeList;
-using sword::AttributeValue;
-using sword::VerseKey;
-using sword::FilterList;
-using sword::OSISWordJS;
+// using sword::SWMgr;
+// using sword::MarkupFilterMgr;
+// using sword::SWModule;
+// using sword::FMT_WEBIF;
+// using sword::FMT_HTMLHREF;
+// using sword::FMT_XHTML;
+// using sword::FMT_OSIS;
+// using sword::FMT_RTF;
+// using sword::FMT_LATEX;
+// using sword::ModMap;
+// using sword::AttributeTypeList;
+// using sword::AttributeList;
+// using sword::AttributeValue;
+// using sword::VerseKey;
+// using sword::FilterList;
+// using sword::OSISWordJS;
 
 // void writeBookNamesToCSV(const std::string& filename) {
 //     std::ofstream csvFile(filename);
@@ -368,87 +526,87 @@ using sword::OSISWordJS;
 //     return 0;
 // }
 
-std::string stripHtml(const std::string& html) {
-    // Remove HTML tags
-    std::regex htmlTagRegex("<[^>]*>");
-    std::string text = std::regex_replace(html, htmlTagRegex, "");
+// std::string stripHtml(const std::string& html) {
+//     // Remove HTML tags
+//     std::regex htmlTagRegex("<[^>]*>");
+//     std::string text = std::regex_replace(html, htmlTagRegex, "");
 
-    // Remove excess white space and new lines
-    std::regex multipleSpacesRegex("\\s+");
-    text = std::regex_replace(text, multipleSpacesRegex, " ");
+//     // Remove excess white space and new lines
+//     std::regex multipleSpacesRegex("\\s+");
+//     text = std::regex_replace(text, multipleSpacesRegex, " ");
 
-    // Trim leading and trailing white spaces
-    text.erase(text.find_last_not_of(" \t\n\r\f\v") + 1);
-    text.erase(0, text.find_first_not_of(" \t\n\r\f\v"));
+//     // Trim leading and trailing white spaces
+//     text.erase(text.find_last_not_of(" \t\n\r\f\v") + 1);
+//     text.erase(0, text.find_first_not_of(" \t\n\r\f\v"));
 
-    return text;
-}
+//     return text;
+// }
 
-std::map<int, std::string> moduleMap = {
-    {1, "Alb"},            // Albanian Bible
-    {2, "BurJudson"},      // 1835 Judson Burmese Bible
-    {3, "CebPinadayag"},   // Cebuano Pinadayag
-    {4, "ChiUn"},          // 和合本 (繁體字)
-    {5, "ChiUns"},         // 和合本 (简体字)
-    {6, "CroSaric"},       // Hrvatska Biblija Ivana Šarića
-    {7, "DaOT1931NT1907"}, // Danish OT193I + NT1907 with original orthography
-    {8, "FinPR"},          // Finnish Pyhä Raamattu (1933/1938)
-    {9, "FreJND"},         // Bible J.N. Darby in French with Strong's numbers
-    {10, "GerMenge"},      // Menge-Bibel (1939)
-    {11, "Haitian"},       // Haitian Creole Bible
-    {12, "HunKar"},        // Revideált Károli Biblia 1908
-    {13, "ItaRive"},       // Italian Riveduta Bibbia (1927)
-    {14, "JapKougo"},      // Japanese Kougo-yaku 口語訳「聖書」(1954/1955年版)
-    {15, "KorRV"},         // 개역성경
-    {16, "LvGluck8"},      // Latvian Glück 8th edition
-    {17, "Mal1910"},       // Sathyavedapusthakam (Malayalam Bible) published in 1910
-    {18, "Mg1865"},        // Baiboly Malagasy (1865)
-    {19, "NlCanisius1939"},// Petrus Canisius Translation
-    {20, "NorSMB"},        // Studentmållagsbibelen frå 1921
-    {21, "Norsk"},         // Bibelen på Norsk (1930)
-    {22, "PolGdanska"},    // Polish Biblia Gdanska (1881)
-    {23, "RusSynodal"},    // Синодального Перевода Библии
-    {24, "SpaPlatense"},   // Biblia Platense (Straubinger)
-    {25, "SrKDEkavski"},   // Serbian Bible Daničić-Karadžić Ekavski
-    {26, "SrKDIjekav"},    // Serbian Bible Daničić-Karadžić Ijekavski
-    {27, "Swe1917"},       // Swedish Bible (1917)
-    {28, "TagAngBiblia"},  // Philippine Bible Society (1905)
-    {29, "UkrOgienko"},    // Українська Біблія. Переклад Івана Огієнка.
-    {30, "Viet"},          // Kinh Thánh Tiếng Việt (1934)
-    {31, "NHEB"},          // New Heart English Bible
-    {32, "arbVDeb"},       // الكتاب المقدس باللغة العربية، فان دايك
-    {33, "hebmodeb"},      // תנ ך עברי מודרני
-    {34, "pesOPV1895eb"},  // ترجمه قدیم
-    {35, "porbrbsl2022eb"} // Bíblia Portuguesa Mundial
-};
+// std::map<int, std::string> moduleMap = {
+//     {1, "Alb"},            // Albanian Bible
+//     {2, "BurJudson"},      // 1835 Judson Burmese Bible
+//     {3, "CebPinadayag"},   // Cebuano Pinadayag
+//     {4, "ChiUn"},          // 和合本 (繁體字)
+//     {5, "ChiUns"},         // 和合本 (简体字)
+//     {6, "CroSaric"},       // Hrvatska Biblija Ivana Šarića
+//     {7, "DaOT1931NT1907"}, // Danish OT193I + NT1907 with original orthography
+//     {8, "FinPR"},          // Finnish Pyhä Raamattu (1933/1938)
+//     {9, "FreJND"},         // Bible J.N. Darby in French with Strong's numbers
+//     {10, "GerMenge"},      // Menge-Bibel (1939)
+//     {11, "Haitian"},       // Haitian Creole Bible
+//     {12, "HunKar"},        // Revideált Károli Biblia 1908
+//     {13, "ItaRive"},       // Italian Riveduta Bibbia (1927)
+//     {14, "JapKougo"},      // Japanese Kougo-yaku 口語訳「聖書」(1954/1955年版)
+//     {15, "KorRV"},         // 개역성경
+//     {16, "LvGluck8"},      // Latvian Glück 8th edition
+//     {17, "Mal1910"},       // Sathyavedapusthakam (Malayalam Bible) published in 1910
+//     {18, "Mg1865"},        // Baiboly Malagasy (1865)
+//     {19, "NlCanisius1939"},// Petrus Canisius Translation
+//     {20, "NorSMB"},        // Studentmållagsbibelen frå 1921
+//     {21, "Norsk"},         // Bibelen på Norsk (1930)
+//     {22, "PolGdanska"},    // Polish Biblia Gdanska (1881)
+//     {23, "RusSynodal"},    // Синодального Перевода Библии
+//     {24, "SpaPlatense"},   // Biblia Platense (Straubinger)
+//     {25, "SrKDEkavski"},   // Serbian Bible Daničić-Karadžić Ekavski
+//     {26, "SrKDIjekav"},    // Serbian Bible Daničić-Karadžić Ijekavski
+//     {27, "Swe1917"},       // Swedish Bible (1917)
+//     {28, "TagAngBiblia"},  // Philippine Bible Society (1905)
+//     {29, "UkrOgienko"},    // Українська Біблія. Переклад Івана Огієнка.
+//     {30, "Viet"},          // Kinh Thánh Tiếng Việt (1934)
+//     {31, "NHEB"},          // New Heart English Bible
+//     {32, "arbVDeb"},       // الكتاب المقدس باللغة العربية، فان دايك
+//     {33, "hebmodeb"},      // תנ ך עברי מודרני
+//     {34, "pesOPV1895eb"},  // ترجمه قدیم
+//     {35, "porbrbsl2022eb"} // Bíblia Portuguesa Mundial
+// };
 
 
-void lookupVerse(const std::string &moduleName, const std::string &verseKey) {
-    sword::SWMgr manager;
-    SWModule *target = manager.getModule(moduleName.c_str());
+// void lookupVerse(const std::string &moduleName, const std::string &verseKey) {
+//     sword::SWMgr manager;
+//     SWModule *target = manager.getModule(moduleName.c_str());
 
-    if (!target) {
-        std::cerr << "Could not find module [" << moduleName << "].\n";
-        return;
-    }
+//     if (!target) {
+//         std::cerr << "Could not find module [" << moduleName << "].\n";
+//         return;
+//     }
 
-        sword::VerseKey vk;
-        vk.setText(verseKey.c_str());
-        target->setKey(&vk);
+//         sword::VerseKey vk;
+//         vk.setText(verseKey.c_str());
+//         target->setKey(&vk);
 
-        // Log the verse key and module name
-        std::cout << moduleName << " - " << vk.getText() << " \n";
+//         // Log the verse key and module name
+//         std::cout << moduleName << " - " << vk.getText() << " \n";
 
-        // Force an entry lookup to resolve the key
-        target->renderText();
+//         // Force an entry lookup to resolve the key
+//         target->renderText();
 
-        // Get the rendered text and strip HTML
-        sword::SWBuf renderedTextBuf = target->renderText();  // Get SWBuf
-        std::string renderedText = renderedTextBuf.c_str();   // Convert to std::string
-        std::string strippedText = stripHtml(renderedText);
-        std::cout << strippedText << "\n";
+//         // Get the rendered text and strip HTML
+//         sword::SWBuf renderedTextBuf = target->renderText();  // Get SWBuf
+//         std::string renderedText = renderedTextBuf.c_str();   // Convert to std::string
+//         std::string strippedText = stripHtml(renderedText);
+//         std::cout << strippedText << "\n";
 	
-}
+// }
 
 // void lookupVerse(const std::vector<std::string>& moduleNumbers, const std::string& verseKey) {
 //     for (const std::string& mod : moduleNumbers) {
@@ -477,38 +635,38 @@ void lookupVerse(const std::string &moduleName, const std::string &verseKey) {
 // }
 
 
-std::vector<int> parseModuleNumbers(const std::string &moduleNumbers) {
-    std::vector<int> result;
-    std::stringstream ss(moduleNumbers);
-    std::string item;
-    while (std::getline(ss, item, ',')) {
-        result.push_back(std::stoi(item));
-    }
-    return result;
-}
+// std::vector<int> parseModuleNumbers(const std::string &moduleNumbers) {
+//     std::vector<int> result;
+//     std::stringstream ss(moduleNumbers);
+//     std::string item;
+//     while (std::getline(ss, item, ',')) {
+//         result.push_back(std::stoi(item));
+//     }
+//     return result;
+// }
 
-int main(int argc, char **argv) {
-    if (argc != 3) {
-        std::cerr << "Usage: " << argv[0] << " <module_numbers> <\"verse_key\">\n";
-        std::cerr << "Example: " << argv[0] << " \"1,2,4\" \"Hosea 1:1\"\n";
-        return 1;
-    }
+// int main(int argc, char **argv) {
+//     if (argc != 3) {
+//         std::cerr << "Usage: " << argv[0] << " <module_numbers> <\"verse_key\">\n";
+//         std::cerr << "Example: " << argv[0] << " \"1,2,4\" \"Hosea 1:1\"\n";
+//         return 1;
+//     }
 
-    std::string moduleNumbersStr = argv[1];
-    std::string verseKey = argv[2];
-    std::vector<int> moduleNumbers = parseModuleNumbers(moduleNumbersStr);
+//     std::string moduleNumbersStr = argv[1];
+//     std::string verseKey = argv[2];
+//     std::vector<int> moduleNumbers = parseModuleNumbers(moduleNumbersStr);
 
-    for (int num : moduleNumbers) {
-        auto it = moduleMap.find(num);
-        if (it != moduleMap.end()) {
-            lookupVerse(it->second, verseKey);
-        } else {
-            std::cerr << "Module number " << num << " not found.\n";
-        }
-    }
+//     for (int num : moduleNumbers) {
+//         auto it = moduleMap.find(num);
+//         if (it != moduleMap.end()) {
+//             lookupVerse(it->second, verseKey);
+//         } else {
+//             std::cerr << "Module number " << num << " not found.\n";
+//         }
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
 
 
 // int main(int argc, char **argv)
